@@ -166,8 +166,8 @@ namespace ASE_Persistence
                     DateTime.TryParseExact(reader.GetAttribute("TransactionDate"), "yyyy MM dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out TransactionDate);
                     int.TryParse(reader.GetAttribute("TransactionInterval"), out TransactionInterval);
                     decimal.TryParse(reader.GetAttribute("TransactionAmount"), out TransactionAmount);
-                    TransactionFrom = StringUtils.FirstCharToUpperreader.GetAttribute("TransactionWithdrawlAccount") ?? string.Empty);
-                    TransactionTo = StringUtils.FirstCharToUpperreader.GetAttribute("TransactionTargetAccount") ?? string.Empty);
+                    TransactionFrom = StringUtils.FirstCharToUpper(reader.GetAttribute("TransactionWithdrawlAccount") ?? string.Empty);
+                    TransactionTo = StringUtils.FirstCharToUpper(reader.GetAttribute("TransactionTargetAccount") ?? string.Empty);
                 }
             }
 
