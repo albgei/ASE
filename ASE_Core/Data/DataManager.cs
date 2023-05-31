@@ -1,30 +1,33 @@
-﻿using ASE_Core.Data;
-using ASE_Core.Interfaces;
+﻿using ASE_Interfaces;
+using ASE_DataModels.Utils;
+using ASE_DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ASE_Core.Controller
+namespace ASE_Core.Data
 {
-    public class DataManager
+    public class DataManager : IDataManager
     {
-
-        private Dictionary<string, Account> _accounts = new Dictionary<string, Account>();
-        private Dictionary<int, Transaction> _transactions = new Dictionary<int, Transaction>();
-
+        private readonly AccountGroup _group;
+        public DataManager()
+        {
+            _group = new AccountGroup();
+        }
 
         internal LinkedList<string> GetAccountNames()
         {
-            return new LinkedList<string>(_accounts.Keys.ToList());
+            return new LinkedList<string>(_group._accounts.Keys.ToList());
         }
 
         internal LinkedList<Transaction> GetTransacctionsFromAccountName(string tName)
         {
             LinkedList<Transaction> tList = new LinkedList<Transaction>();
 
-            foreach (Transaction transaction in _transactions.Values)
+            foreach (Transaction transaction in _group._transactions.Values)
             {
                 if (tName.Equals(transaction.FromAccount) || tName.Equals(transaction.ToAccount))
                 {
@@ -36,7 +39,7 @@ namespace ASE_Core.Controller
 
         internal Account? GetAccountFromAccountName(string tName)
         {
-            foreach (Account account in _accounts.Values)
+            foreach (Account account in _group._accounts.Values)
             {
                 if (tName.Equals(account.AccountName))
                 {
@@ -48,14 +51,14 @@ namespace ASE_Core.Controller
 
         internal void AddNewAccount(Account tAccount)
         {
-            _accounts.Add(tAccount.AccountName, tAccount);
+            _group._accounts.Add(tAccount.AccountName, tAccount);
         }
 
         internal void RemoveAccount(string tName)
         {
-            _accounts.Remove(tName);
+            _group._accounts.Remove(tName);
             LinkedList<int> tListRemove = new LinkedList<int>();
-            foreach (var transactionKVP in _transactions)
+            foreach (var transactionKVP in _group._transactions)
             {
                 Transaction transaction = transactionKVP.Value;
                 if (transaction.ToAccount.Equals(tName) || transaction.FromAccount.Equals(tName))
@@ -67,30 +70,30 @@ namespace ASE_Core.Controller
             {
                 foreach (var transactionName in tListRemove)
                 {
-                    _transactions.Remove(transactionName);
+                    _group._transactions.Remove(transactionName);
                 }
             }
         }
 
         internal void AddNewTransaction(Transaction tTransaction)
         {
-            _transactions.Add(tTransaction.TransactionId, tTransaction);
+            _group._transactions.Add(tTransaction.TransactionId, tTransaction);
         }
 
 
         internal void RemoveTransaction(int tId)
         {
-            _transactions.Remove(tId);
+            _group._transactions.Remove(tId);
         }
 
         internal int GetNewTransactionId()
         {
-            if (_transactions.ContainsKey(_transactions.Count))
+            if (_group._transactions.ContainsKey(_group._transactions.Count))
             {
                 int i = 0;
-                foreach (var transaction in _transactions)
+                foreach (var transaction in _group._transactions)
                 {
-                    if (!_transactions.ContainsKey(i))
+                    if (!_group._transactions.ContainsKey(i))
                     {
                         return i;
                     }
@@ -101,17 +104,17 @@ namespace ASE_Core.Controller
             }
             else
             {
-                return _transactions.Count;
+                return _group._transactions.Count;
             }
         }
 
-        internal Dictionary<int, Transaction> GetTransactions()
+        public Dictionary<int, Transaction> GetTransactions()
         {
-            return _transactions;
+            return _group._transactions;
         }
-        internal Dictionary<string, Account> GetAccounts()
+        public Dictionary<string, Account> GetAccounts()
         {
-            return _accounts;
+            return _group._accounts;
         }
 
 

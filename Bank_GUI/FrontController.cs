@@ -5,7 +5,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using ASE_Core.Data;
-using ASE_Core.Interfaces;
+using ASE_DataModels;
+using ASE_Interfaces;
 
 namespace Bank_GUI
 {
@@ -143,7 +144,6 @@ namespace Bank_GUI
             }
 
             _gui.SetSavings(list);
-            throw new NotImplementedException();
         }
 
         private void GetNegativeSavingsDate()

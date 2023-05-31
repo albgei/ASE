@@ -1,7 +1,8 @@
-﻿using ASE_Core.Controller;
-using ASE_Core.Interfaces;
-using ASE_Core.Persistence;
+﻿using ASE_Interfaces;
+using ASE_Persistence;
+using ASE_DataModels;
 using ASE_Core.Savings;
+using ASE_DataModels.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ASE_Core.Data
     public class BackendInterfacer
     {
         private readonly IFrontend _frontend;
-        private readonly XMLPersister _persister;
+        private readonly IPersist _persister;
         private readonly BalanceCalculator _balance;
         private readonly SavingsCalculator _savings;
         private readonly DataManager _manager;
@@ -25,7 +26,7 @@ namespace ASE_Core.Data
             _frontend = frontend;
             _manager = new DataManager();
             _balance = new BalanceCalculator(_manager);
-            _persister = new XMLPersister(_manager);
+            _persister = new XMLPersister();
             _savings = new SavingsCalculator(_balance, _manager);
 
         }

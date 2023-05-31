@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ASE_DataModels\ASE_DataModels.csproj" />
-    <ProjectReference Include="..\Persistenz\ASE_Persistence.csproj" />
-    <ProjectReference Include="..\Utils\ASE_Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

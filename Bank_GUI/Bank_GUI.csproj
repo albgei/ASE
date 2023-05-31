@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ASE_Core\ASE_Core.csproj" />
+    <ProjectReference Include="..\Utils\ASE_Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

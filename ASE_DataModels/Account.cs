@@ -1,11 +1,11 @@
-﻿using ASE_Core.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ASE_DataModels.Utils;
 
-namespace ASE_Core.Data
+namespace ASE_DataModels
 {
     public class Account
     {

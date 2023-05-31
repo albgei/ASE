@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASE_Core.Utils
+namespace ASE_DataModels.Utils
 {
     public class StringUtils
     {

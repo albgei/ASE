@@ -1,11 +1,12 @@
-﻿using ASE_Core.Data;
+﻿using ASE_DataModels;
+using ASE_DataModels.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASE_Core.Interfaces
+namespace ASE_Interfaces
 {
     public interface IFrontend
     {

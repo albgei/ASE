@@ -1,6 +1,4 @@
-﻿using ASE_Core.Controller;
-using ASE_Core.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,19 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using ASE_Interfaces;
+using ASE_DataModels;
+using ASE_DataModels.Utils;
 
-namespace ASE_Core.Persistence
+namespace ASE_Persistence
 {
-    public class XMLPersister
+    public class XMLPersister : IPersist
     {
-        private DataManager _data { get; }
+        private IDataManager _data = default!;
 
-        internal XMLPersister(DataManager data)
+        public void InitializePersister(IDataManager data)
         {
             _data = data;
         }
 
-        internal void Persist()
+        public void Persist()
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
@@ -70,7 +71,7 @@ namespace ASE_Core.Persistence
             }
         }
 
-        internal void Load(Dictionary<string, Account> accounts, Dictionary<int, Transaction> transactions)
+        public void Load(Dictionary<string, Account> accounts, Dictionary<int, Transaction> transactions)
         {
             string path = "Persistence/Persisted/Banking_Info_Persistence.xml";
             DirectoryInfo? info = Directory.GetParent(path);
@@ -121,13 +122,13 @@ namespace ASE_Core.Persistence
         internal void LoadCleanStart(Dictionary<string, Account> accounts, Dictionary<int, Transaction> transactions)
         {
             accounts.Add("Init", new Account("init", 0, 0, 0));
-            transactions.Add(0, new Transaction(0, 0, DateTime.MinValue, 0, String.Empty, "init"));
+            transactions.Add(0, new Transaction(0, 0, DateTime.MinValue, 0, string.Empty, "Init"));
 
         }
 
         private void CreateAccount(XmlReader reader, Dictionary<string, Account> accounts)
         {
-            string AccountName = String.Empty;
+            string AccountName = string.Empty;
             decimal Intrest = 0;
             decimal SavingsGoal = 0;
             decimal Slado = 0;
@@ -136,10 +137,10 @@ namespace ASE_Core.Persistence
             {
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    AccountName = reader.GetAttribute("AccountName") ?? String.Empty;
-                    Decimal.TryParse(reader.GetAttribute("Interest"), out Intrest);
-                    Decimal.TryParse(reader.GetAttribute("SavingsGoal"), out SavingsGoal);
-                    Decimal.TryParse(reader.GetAttribute("Slado"), out Slado);
+                    AccountName = StringUtils.FirstCharToUpper(reader.GetAttribute("AccountName") ?? string.Empty);
+                    decimal.TryParse(reader.GetAttribute("Interest"), out Intrest);
+                    decimal.TryParse(reader.GetAttribute("SavingsGoal"), out SavingsGoal);
+                    decimal.TryParse(reader.GetAttribute("Slado"), out Slado);
 
                 }
             }
@@ -154,19 +155,19 @@ namespace ASE_Core.Persistence
             DateTime TransactionDate = DateTime.MinValue;
             int TransactionInterval = 0;
             decimal TransactionAmount = 0;
-            string TransactionFrom = String.Empty;
-            string TransactionTo = String.Empty;
+            string TransactionFrom = string.Empty;
+            string TransactionTo = string.Empty;
 
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    Int32.TryParse(reader.GetAttribute("TransactionID"), out TransactionID);
+                    int.TryParse(reader.GetAttribute("TransactionID"), out TransactionID);
                     DateTime.TryParseExact(reader.GetAttribute("TransactionDate"), "yyyy MM dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out TransactionDate);
-                    Int32.TryParse(reader.GetAttribute("TransactionInterval"), out TransactionInterval);
-                    Decimal.TryParse(reader.GetAttribute("TransactionAmount"), out TransactionAmount);
-                    TransactionFrom = reader.GetAttribute("TransactionWithdrawlAccount") ?? String.Empty;
-                    TransactionTo = reader.GetAttribute("TransactionTargetAccount") ?? String.Empty;
+                    int.TryParse(reader.GetAttribute("TransactionInterval"), out TransactionInterval);
+                    decimal.TryParse(reader.GetAttribute("TransactionAmount"), out TransactionAmount);
+                    TransactionFrom = StringUtils.FirstCharToUpperreader.GetAttribute("TransactionWithdrawlAccount") ?? string.Empty);
+                    TransactionTo = StringUtils.FirstCharToUpperreader.GetAttribute("TransactionTargetAccount") ?? string.Empty);
                 }
             }
 
